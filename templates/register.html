@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register - SkillSwap</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#0f172a,#1e293b);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.register-box{
+background:white;
+padding:40px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+width:100%;
+max-width:480px;
+animation:fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+.title{
+font-weight:700;
+color:#0f172a;
+}
+
+.subtitle{
+color:#64748b;
+font-size:15px;
+margin-bottom:25px;
+}
+
+.form-control{
+padding:12px;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+.form-control:focus{
+box-shadow:none;
+border-color:#38bdf8;
+}
+
+.btn-main{
+background:#38bdf8;
+color:white;
+padding:12px;
+border-radius:10px;
+font-weight:600;
+border:none;
+}
+
+.btn-main:hover{
+background:#0ea5e9;
+}
+
+.upload-box{
+border:2px dashed #cbd5e1;
+padding:15px;
+border-radius:10px;
+text-align:center;
+margin-bottom:15px;
+color:#64748b;
+}
+
+.bottom-text{
+text-align:center;
+margin-top:18px;
+font-size:14px;
+}
+
+.bottom-text a{
+text-decoration:none;
+color:#38bdf8;
+font-weight:600;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="register-box">
+
+<h2 class="title text-center">Create Account</h2>
+<p class="subtitle text-center">Join SkillSwap and start learning today</p>
+
+<form action="/register_user" method="POST" enctype="multipart/form-data">
+
+<input type="text" name="name" class="form-control" placeholder="Full Name" required>
+
+<input type="email" name="email" class="form-control" placeholder="Email Address" required>
+
+<input type="password" name="password" class="form-control" placeholder="Password" required>
+
+<div class="upload-box">
+<i class="fas fa-image me-2"></i>
+Upload Profile Photo
+<input type="file" name="photo" class="form-control mt-2" required>
+</div>
+
+<button class="btn btn-main w-100">Register</button>
+
+</form>
+
+<div class="bottom-text">
+Already have an account? <a href="/login">Login</a>
+</div>
+
+</div>
+
+</body>
+</html>

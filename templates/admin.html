@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Admin Dashboard</h2>
+
+<h4>Users</h4>
+{% for u in users %}
+<p>{{u.name}}</p>
+{% endfor %}
+
+<h4>Skills</h4>
+{% for s in skills %}
+<p>{{s.skill_name}}</p>
+{% endfor %}
+
+<h4>Requests</h4>
+{% for r in requests %}
+<p>{{r.status}}</p>
+{% endfor %}
+
+{% endblock %}

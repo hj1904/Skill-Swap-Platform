@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Browse Users - SkillSwap</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background:#f8fafc;
+font-family:'Segoe UI',sans-serif;
+}
+
+.user-card{
+background:white;
+padding:25px;
+border-radius:18px;
+box-shadow:0 8px 20px rgba(0,0,0,0.06);
+transition:0.3s;
+height:100%;
+}
+
+.user-card:hover{
+transform:translateY(-6px);
+}
+
+.user-img{
+width:80px;
+height:80px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #38bdf8;
+}
+
+.btn-main{
+background:#38bdf8;
+color:white;
+border:none;
+padding:8px 16px;
+border-radius:8px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container py-5">
+
+<h2 class="mb-4 text-center">Browse Users</h2>
+
+<div class="row g-4">
+
+{% for u in users %}
+
+<div class="col-md-4">
+
+<div class="user-card text-center">
+
+<img src="/uploads/{{u.photo}}" class="user-img mb-3">
+
+<h5>{{u.name}}</h5>
+
+<p class="text-muted">{{u.email}}</p>
+
+<a href="/profile/{{u._id}}" class="btn btn-main">
+View Profile
+</a>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Requests - SkillSwap</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background:#f1f5f9;
+font-family:'Segoe UI',sans-serif;
+}
+
+/* Main Box */
+.main-box{
+max-width:1000px;
+margin:auto;
+}
+
+/* Section Title */
+.section-title{
+font-weight:700;
+margin-bottom:20px;
+color:#0f172a;
+}
+
+/* Cards */
+.request-card{
+background:white;
+padding:25px;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+margin-bottom:20px;
+transition:0.3s;
+}
+
+.request-card:hover{
+transform:translateY(-5px);
+}
+
+/* User Image */
+.user-img{
+width:60px;
+height:60px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #38bdf8;
+}
+
+/* Buttons */
+.btn-accept{
+background:#10b981;
+color:white;
+border:none;
+}
+
+.btn-reject{
+background:#ef4444;
+color:white;
+border:none;
+}
+
+/* Navbar */
+.navbar{
+background:#0f172a;
+}
+
+.navbar-brand{
+font-weight:700;
+color:white !important;
+}
+
+/* Status */
+.status{
+font-weight:600;
+}
+
+</style>
+
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+<div class="container">
+
+<a class="navbar-brand" href="/dashboard">SkillSwap</a>
+
+<div>
+<a href="/dashboard" class="btn btn-outline-light btn-sm">Dashboard</a>
+</div>
+
+</div>
+</nav>
+
+<div class="container py-5 main-box">
+
+<h2 class="text-center mb-5">📩 My Requests</h2>
+
+<!-- Flash Message -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-success text-center">
+{{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+
+<!-- ================= Incoming Requests ================= -->
+
+<h3 class="section-title">📥 Incoming Requests</h3>
+
+{% if incoming|length == 0 %}
+<div class="alert alert-warning">
+No incoming requests found.
+</div>
+{% endif %}
+
+{% for r in incoming %}
+
+<div class="request-card d-flex justify-content-between align-items-center">
+
+<div class="d-flex align-items-center">
+
+<img src="/static/uploads/{{r.photo}}" class="user-img me-3">
+
+<div>
+
+<h5 class="mb-1">{{r.name}}</h5>
+
+<p class="mb-1 text-muted">
+wants to learn <b>{{r.skill}}</b>
+</p>
+
+<p class="status">
+Status:
+
+{% if r.status == "pending" %}
+<span class="text-warning">Pending</span>
+
+{% elif r.status == "accepted" %}
+<span class="text-success">Accepted</span>
+
+{% else %}
+<span class="text-danger">Rejected</span>
+{% endif %}
+
+</p>
+
+</div>
+</div>
+
+{% if r.status == "pending" %}
+<form action="/update_request" method="POST">
+
+<input type="hidden" name="id" value="{{r._id}}">
+
+<button class="btn btn-accept me-2" name="status" value="accepted">
+Accept
+</button>
+
+<button class="btn btn-reject" name="status" value="rejected">
+Reject
+</button>
+
+</form>
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+<hr class="my-5">
+
+<!-- ================= Sent Requests ================= -->
+
+<h3 class="section-title">📤 Sent Requests</h3>
+
+{% if sent|length == 0 %}
+<div class="alert alert-warning">
+No sent requests found.
+</div>
+{% endif %}
+
+{% for s in sent %}
+
+<div class="request-card d-flex align-items-center">
+
+<img src="static/uploads/{{s.photo}}" class="user-img me-3">
+
+<div>
+
+<h5 class="mb-1">{{s.name}}</h5>
+
+<p class="mb-1 text-muted">
+You requested to learn <b>{{s.skill}}</b>
+</p>
+
+<p class="status">
+Status:
+
+{% if s.status == "pending" %}
+<span class="text-warning">Pending</span>
+
+{% elif s.status == "accepted" %}
+<span class="text-success">Accepted</span>
+
+{% else %}
+<span class="text-danger">Rejected</span>
+{% endif %}
+
+</p>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</body>
+</html>

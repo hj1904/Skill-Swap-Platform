@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>My Profile</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+body{
+background:linear-gradient(135deg,#eef2f7,#dbeafe);
+font-family:Segoe UI;
+}
+
+.sidebar{
+height:100vh;
+background:#0f172a;
+padding:25px;
+}
+
+.sidebar h3{
+color:white;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+padding:14px;
+margin-bottom:12px;
+border-radius:12px;
+color:#cbd5e1;
+text-decoration:none;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:#1e293b;
+color:white;
+}
+
+.main{
+padding:40px;
+}
+
+.profile-card{
+background:white;
+border-radius:25px;
+padding:35px;
+box-shadow:0 15px 35px rgba(0,0,0,0.08);
+}
+
+.avatar{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+border:4px solid #38bdf8;
+}
+
+.stat-box{
+background:#f8fafc;
+padding:18px;
+border-radius:18px;
+text-align:center;
+}
+
+.skill-box{
+background:#f8fafc;
+padding:25px;
+border-radius:20px;
+min-height:220px;
+}
+
+.edit-btn{
+border-radius:12px;
+padding:10px 20px;
+}
+
+.profile-img{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #38bdf8;
+    box-shadow:0 8px 20px rgba(0,0,0,0.12);
+}
+
+.default-avatar{
+    background:#2563eb;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:50px;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-success text-center m-3" id="popup">
+    {{ messages[0] }}
+</div>
+
+<script>
+setTimeout(function(){
+document.getElementById("popup").style.display="none";
+},3000);
+</script>
+
+{% endif %}
+{% endwith %}
+
+<div class="container-fluid">
+<div class="row">
+
+<!-- Sidebar -->
+
+<div class="col-md-2 sidebar">
+
+<h3>SkillSwap</h3>
+
+<a href="/dashboard">🏠 Dashboard</a>
+<a href="/profile">👤 My Profile</a>
+<a href="/search">🔍 Search Skills</a>
+<a href="/requests">📩 Requests</a>
+<a href="/edit_profile">✏ Edit Profile</a>
+<a href="/logout">🚪 Logout</a>
+
+</div>
+
+<!-- Main -->
+
+<div class="col-md-10 main">
+
+<div class="profile-card">
+
+<div class="d-flex justify-content-between align-items-center flex-wrap">
+
+<div class="d-flex align-items-center gap-4 flex-wrap">
+
+{% if user.photo %}
+{% if user.photo %}
+<img src="{{ url_for('static', filename='uploads/' + user.photo) }}" class="profile-img">
+{% else %}
+<div class="profile-img default-avatar">
+    {{ user.name[0] }}
+</div>
+{% endif %}
+{% else %}
+<div class="avatar d-flex justify-content-center align-items-center bg-primary text-white fs-1">
+{{user.name[0]}}
+</div>
+{% endif %}
+
+<div>
+<h1>{{user.name}}</h1>
+<p class="text-muted mb-1">@{{user.username}}</p>
+<p class="text-secondary">{{user.email}}</p>
+
+<a href="/edit_profile" class="btn btn-primary edit-btn mt-2">
+✏ Edit Profile
+</a>
+</div>
+
+</div>
+
+<div class="row g-3">
+
+<div class="col-4">
+<div class="stat-box">
+<h3>{{connections}}</h3>
+<small>Connections</small>
+</div>
+</div>
+
+<div class="col-4">
+<div class="stat-box">
+<h3>{{teach_skills|length + learn_skills|length}}</h3>
+<small>Skills</small>
+</div>
+</div>
+
+<div class="col-4">
+<div class="stat-box">
+<h3>{{sent_count}}</h3>
+<small>Requests</small>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-4">
+
+<div class="row g-4">
+
+<div class="col-md-6">
+
+<div class="skill-box">
+
+<h4 class="text-primary mb-3">📘 Can Teach</h4>
+
+{% for s in teach_skills %}
+<p>✔ {{s.skill_name}}</p>
+{% else %}
+<p class="text-muted">No skills added</p>
+{% endfor %}
+
+</div>
+
+</div>
+
+<div class="col-md-6">
+
+<div class="skill-box">
+
+<!-- <h4 class="text-success mb-3">🎯 Wants To Learn</h4>
+
+{% for s in learn_skills %}
+<p>✔ {{s.skill_name}}</p>
+{% else %}
+<p class="text-muted">No skills added</p>
+{% endfor %}
+
+</div> -->
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</body>
+</html>

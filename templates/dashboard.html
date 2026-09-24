@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard - SkillSwap</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:#f8fafc;
+}
+
+/* Sidebar */
+
+.sidebar{
+min-height:100vh;
+background:#0f172a;
+padding:25px;
+}
+
+.sidebar h3{
+color:white;
+font-weight:700;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+color:#cbd5e1;
+text-decoration:none;
+padding:12px;
+margin-bottom:10px;
+border-radius:10px;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:#1e293b;
+color:#38bdf8;
+}
+
+/* Main */
+
+.topbar{
+background:white;
+padding:18px 25px;
+box-shadow:0 3px 10px rgba(0,0,0,0.05);
+border-radius:12px;
+}
+
+.card-box{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,0.06);
+transition:0.3s;
+height:100%;
+}
+
+.card-box:hover{
+transform:translateY(-5px);
+}
+
+.profile-img{
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #38bdf8;
+}
+
+.btn-main{
+background:#38bdf8;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:10px;
+font-weight:600;
+}
+
+.btn-main:hover{
+background:#0ea5e9;
+color:white;
+}
+
+.form-control, .form-select{
+border-radius:10px;
+padding:11px;
+}
+
+</style>
+
+</head>
+<body>
+    <!-- {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert text-center">
+      {{ messages[0] }}
+    </div>
+  {% endif %}
+{% endwith %} -->
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-{{ messages[0].category }} text-center">
+    {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="container-fluid">
+<div class="row">
+
+<!-- Sidebar -->
+
+<div class="col-md-3 col-lg-2 sidebar">
+
+<h3>SkillSwap</h3>
+
+<a href="/dashboard"><i class="fas fa-home me-2"></i> Dashboard</a>
+<a href="/profile"><i class="fas fa-user me-2"></i> My Profile</a>
+<a href="/search"><i class="fas fa-search me-2"></i> Search Skills</a>
+<a href="/requests"><i class="fas fa-envelope me-2"></i> Requests</a>
+<a href="/admin"><i class="fas fa-user-shield me-2"></i> Admin</a>
+<a href="/"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+
+</div>
+
+<!-- Main Content -->
+
+<div class="col-md-9 col-lg-10 p-4">
+
+<div class="topbar d-flex justify-content-between align-items-center mb-4">
+
+<div>
+<h2>Welcome, {{user.name}}</h2>
+<p>Manage your skills and requests</p>
+</div>
+{% if user.photo %}
+<img src="{{ url_for('static', filename='uploads/' + user.photo) }}"
+style="width:100px;height:100px;border-radius:50%;object-fit:cover;">
+{% else %}
+<div style="
+width:100px;
+height:100px;
+border-radius:50%;
+background:#3b82f6;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:40px;">
+{{ user.name[0] }}
+</div>
+{% endif %}
+
+</div>
+
+<div class="row g-4">
+
+<!-- Add Skill -->
+
+<div class="col-md-6">
+
+<div class="card-box">
+
+<h5 class="mb-3"><i class="fas fa-plus-circle text-primary me-2"></i>Add New Skill</h5>
+
+<form action="/add_skill" method="POST">
+
+<input type="hidden" name="user_id" value="{{user._id}}">
+
+<input type="text" name="skill_name" class="form-control mb-3" placeholder="Enter Skill Name" required>
+
+<select name="type" class="form-select mb-3">
+
+<option value="teach">Teach</option>
+<!-- <option value="learn">Learn</option> -->
+
+</select>
+
+<button class="btn btn-main w-100">Add Skill</button>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- Quick Stats -->
+
+<!-- <div class="col-md-6">
+
+<div class="card-box">
+
+<h5 class="mb-3"><i class="fas fa-chart-line text-success me-2"></i>Your Activity</h5>
+
+<p>✔ Skills Added</p>
+<p>✔ Requests Sent</p>
+<p>✔ Connections Made</p>
+
+<a href="/search" class="btn btn-outline-primary w-100 mt-2">Explore Skills</a>
+
+</div>
+
+</div> -->
+<!-- Your Activity -->
+
+<div class="col-md-6">
+
+<div class="card-box">
+
+<h5 class="mb-3">
+<i class="fas fa-chart-line text-success me-2"></i>
+Your Activity
+</h5>
+
+<p>✔ Skills Added: <b>{{skills_count}}</b></p>
+
+<p>✔ Requests Sent: <b>{{sent_count}}</b></p>
+
+<div class="d-grid gap-2 mt-3">
+
+<a href="/profile" class="btn btn-outline-success">
+📘 View My Skills
+</a>
+
+<a href="/requests" class="btn btn-outline-primary">
+📩 View Requests
+</a>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</body>
+</html>

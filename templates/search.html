@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Search Skills - SkillSwap</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:#f8fafc;
+}
+
+/* Navbar */
+
+.navbar{
+background:#0f172a;
+}
+
+.navbar-brand{
+font-weight:700;
+color:white !important;
+}
+
+/* Search Box */
+
+.search-box{
+background:white;
+padding:30px;
+border-radius:16px;
+box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+/* Cards */
+
+.skill-card{
+background:white;
+border-radius:16px;
+padding:25px;
+box-shadow:0 8px 20px rgba(0,0,0,0.06);
+transition:0.3s;
+height:100%;
+}
+
+.skill-card:hover{
+transform:translateY(-6px);
+}
+
+.user-img{
+width:70px;
+height:70px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #38bdf8;
+}
+
+.btn-main{
+background:#38bdf8;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:10px;
+font-weight:600;
+}
+
+.btn-main:hover{
+background:#0ea5e9;
+color:white;
+}
+
+.badge-skill{
+background:#e0f2fe;
+color:#0284c7;
+padding:8px 12px;
+border-radius:30px;
+font-size:13px;
+}
+
+</style>
+
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-info text-center">
+      {{ messages[0] }}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg">
+<div class="container">
+
+<a class="navbar-brand" href="/dashboard">SkillSwap</a>
+
+<div>
+<a href="/dashboard" class="btn btn-outline-light btn-sm">Dashboard</a>
+</div>
+
+</div>
+</nav>
+
+<div class="container py-5">
+
+<!-- Search Form -->
+
+<div class="search-box mb-5">
+
+<h3 class="mb-3">Find Skills & Mentors</h3>
+
+<form method="POST" action="/search">
+
+<div class="row g-2">
+
+<div class="col-md-10">
+<input type="text" name="skill" class="form-control form-control-lg"
+placeholder="Search Python, Design, Editing..." required>
+</div>
+
+<div class="col-md-2">
+<button class="btn btn-main w-100 btn-lg">
+<i class="fas fa-search"></i> Search
+</button>
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+<!-- Results -->
+<!-- Search Results -->
+
+<div class="row g-4 mt-3">
+
+{% for s in skills %}
+
+<div class="col-md-4">
+
+<div class="card p-3 text-center shadow">
+
+<a href="/profile/{{s.user_id}}" style="text-decoration:none;color:black;">
+
+{% if s.photo %}
+<img src="{{ url_for('static', filename='uploads/' + s.photo) }}"
+style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
+{% else %}
+<div style="
+width:80px;
+height:80px;
+border-radius:50%;
+background:#3b82f6;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;">
+{{ s.name[0] }}
+</div>
+{% endif %}
+
+<h5 class="mt-3">{{s.name}}</h5>
+
+</a>
+<a href="/profile/{{s.user_id}}" class="btn btn-outline-dark w-100 mb-2">
+View Profile
+</a>
+
+{% if s.status == "pending" %}
+<button class="btn btn-secondary w-100" disabled>
+⏳ Request Sent
+</button>
+
+{% elif s.status == "accepted" %}
+<button class="btn btn-success w-100" disabled>
+✔ Accepted
+</button>
+
+{% elif s.status == "rejected" %}
+<button class="btn btn-danger w-100" disabled>
+✖ Rejected
+</button>
+
+{% else %}
+
+<form action="/send_request" method="POST">
+
+<input type="hidden" name="receiver_id" value="{{s.user_id}}">
+<input type="hidden" name="skill_id" value="{{s._id}}">
+
+<button class="btn btn-primary w-100">
+Send Request
+</button>
+
+</form>
+
+{% endif %}
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<!-- No User Found ONLY after search -->
+
+{% if searched and skills|length == 0 %}
+<div class="alert alert-warning text-center mt-4">
+No users found with this skill ❌
+</div>
+{% endif %}
+
+</div>
+
+</div>
+
+</body>
+</html>
